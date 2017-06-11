@@ -3150,9 +3150,9 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
-nested-reducer@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/nested-reducer/-/nested-reducer-1.0.2.tgz#cd1c3d3e73661ece45b713d7600349b657f8979c"
+nested-reducer@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/nested-reducer/-/nested-reducer-1.0.3.tgz#665b35385f820f5516aafad5f713febbbc7fe832"
 
 no-case@^2.2.0:
   version "2.3.1"
