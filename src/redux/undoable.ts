@@ -1,19 +1,19 @@
 import { Reducer, Action } from 'redux';
 
-export interface IHistory<T> {
+export interface History<T> {
   past: T[];
   present: T;
   future: T[];
 }
 
-export interface IUndoableConfig {
+export interface UndoableConfig {
   undoAction: string;
   redoAction: string;
   limit: number;
 }
 
-export function undoable<T>(reducer: Reducer<T>, config: IUndoableConfig, initial:T): Reducer<IHistory<T>> {
-  const initialState: IHistory<T> = {
+export function undoable<T>(reducer: Reducer<T>, config: UndoableConfig, initial: T): Reducer<History<T>> {
+  const initialState: History<T> = {
     past: [],
     present: initial,
     future: [],

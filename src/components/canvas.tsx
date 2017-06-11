@@ -1,3 +1,4 @@
+import { MuiTheme } from 'material-ui/styles';
 import { check } from '../utils';
 import { DragEvent } from '../logic/dragndrop';
 import { Id, newId } from '../models/id';
@@ -18,9 +19,12 @@ import { Point } from '../models/geometry/point';
 import { MarkUp } from '../components/markup';
 import { Rect } from '../components/rect';
 
+import muiThemeable from 'material-ui/styles/muiThemeable';
+
 export interface CanvasProps {
     width: number;
     dnd: DragAndDrop;
+    muiTheme?: MuiTheme;
 }
 
 interface CanvasReduxProps {
@@ -73,6 +77,8 @@ class CanvasComponent extends React.Component<Props, CanvasState> {
     }
 
     public render(): JSX.Element {
+        const canvasColor = check(check(check(this.props.muiTheme).palette).canvasColor);
+
         return (
             <Draggable
                 onStart={this.addEmptyFigure}
@@ -86,7 +92,7 @@ class CanvasComponent extends React.Component<Props, CanvasState> {
                     width={this.props.width}
                     height={this.props.width}
                 >
-                    <rect width="100%" height="100%" opacity="0.2" fill="gray" />
+                    <rect width="100%" height="100%" opacity="1" fill={canvasColor} />
                     {this.props.figures.map(this.renderFigure)}
                     {this.renderDragRect(this.state)}
                     <MarkUp
@@ -172,12 +178,13 @@ class CanvasComponent extends React.Component<Props, CanvasState> {
 }
 
 const mapStateToProps: MapStateToProps<CanvasReduxProps, CanvasProps> = (store: AppStore) => {
+    const canvas = store.canvas.present;
     const newProps: CanvasReduxProps = {
-        figures: store.canvas.figures,
-        selectedFigure: store.canvas.figures.find((f) => f.id === store.canvas.selected),
+        figures: canvas.figures,
+        selectedFigure: canvas.figures.find((f) => f.id === canvas.selected),
     };
 
     return newProps;
 };
 
-export const Canvas: React.ComponentClass<CanvasProps> = connect(mapStateToProps)(CanvasComponent);
+export const Canvas = muiThemeable()(connect(mapStateToProps)(CanvasComponent));

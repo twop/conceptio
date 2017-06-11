@@ -1,53 +1,55 @@
+import { undoable, UndoableConfig } from './undoable';
 import { Point } from '../models/geometry/point';
 import { RectHandlerType } from '../models/drag-handler';
 import { Rectangle } from '../models/geometry/rectangle';
-import { Reducer, Action } from 'redux';
+import { Reducer } from 'redux';
+import { HandlerMap, createReducer } from 'nested-reducer';
 
 import {
-  canvasActionTypes,
-  AdjustFigureAction,
-  MoveFigureAction,
-  NewFigureAction,
-  SelectFigureAction,
+    ADD_FIGURE,
+    ADJUST_FIGURE,
+    AdjustFigureAction,
+    CANVAS_REDO,
+    CANVAS_UNDO,
+    DELETE_FIGURE,
+    DeleteFigureAction,
+    MOVE_FIGURE,
+    MoveFigureAction,
+    NewFigureAction,
+    SELECT_FIGURE,
+    SelectFigureAction
 } from './canvas.actions';
 import { Canvas } from './IStore';
 
 const initialState: Canvas = { figures: [], selected: 0 };
 
-export const canvasReducer: Reducer<Canvas> = (state = initialState, action: Action) => {
-
-  switch (action.type) {
-    case canvasActionTypes.ADD_FIGURE: {
-      const { figure } = action as NewFigureAction;
-      return { ...state, figures: [...state.figures, figure] };
-    }
-    case canvasActionTypes.SELECT_FIGURE: {
-      const { figureId } = action as SelectFigureAction;
-      return { ...state, selected: figureId };
-    }
-    case canvasActionTypes.MOVE_FIGURE: {
-      const { figureId, toLocation } = action as MoveFigureAction;
-      return {
-        ...state,
-        figures: state.figures.map((f) => {
-          if (f.id !== figureId) { return f; }
-          return { ...f, rect: f.rect.moveTo(toLocation) };
-        }),
-      };
-    }
-    case canvasActionTypes.ADJUST_FIGURE: {
-      const { figureId, handleLocation, handleType } = action as AdjustFigureAction;
-      return {
-        ...state,
-        figures: state.figures.map((f) => {
-          if (f.id !== figureId) { return f; }
-          return { ...f, rect: adjustHandlers[handleType](f.rect, handleLocation) };
-        }),
-      };
-    }
-    default: { return state; }
-  }
+const canvasHandlers: HandlerMap<Canvas> = {
+  [ADD_FIGURE]: (state, { figure }: NewFigureAction) => ({ ...state, figures: [...state.figures, figure] }),
+  [SELECT_FIGURE]: (state, { figureId }: SelectFigureAction) => ({ ...state, selected: figureId }),
+  [ADJUST_FIGURE]: (state, { figureId, handleLocation, handleType }: AdjustFigureAction) => ({
+    ...state,
+    figures: state.figures.map((f) => {
+      if (f.id !== figureId) { return f; }
+      return { ...f, rect: adjustHandlers[handleType](f.rect, handleLocation) };
+    }),
+  }),
+  [MOVE_FIGURE]: (state, { figureId, toLocation }: MoveFigureAction) => ({
+    ...state,
+    figures: state.figures.map((f) => {
+      if (f.id !== figureId) { return f; }
+      return { ...f, rect: f.rect.moveTo(toLocation) };
+    }),
+  }),
+  [DELETE_FIGURE]: (state, { figureId }: DeleteFigureAction) => ({
+    ...state,
+    figures: state.figures.filter(f => f.id !== figureId),
+    selected: state.selected === figureId ? 0 : state.selected
+  }),
 };
+
+const config: UndoableConfig = { limit: 10, undoAction: CANVAS_UNDO, redoAction: CANVAS_REDO };
+export const reducer: Reducer<Canvas> = createReducer(canvasHandlers, initialState);
+export const canvasReducer = undoable(reducer, config, initialState);
 
 interface AdjustHandlers {
   [key: number]: (rect: Rectangle, handleLocation: Point) => Rectangle;

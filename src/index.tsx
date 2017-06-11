@@ -12,6 +12,12 @@ import { configureStore } from './redux/store';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 
+import * as injectTapEventPlugin from 'react-tap-event-plugin';
+
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+injectTapEventPlugin();
+
 interface Window {
   // A hack for the Redux DevTools Chrome extension.
   __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: <F extends Function>(f: F) => F;

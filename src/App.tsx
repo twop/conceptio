@@ -1,20 +1,22 @@
 import * as React from 'react';
-import './App.css';
+
+import { CommandToolbar } from './containers/toolbar';
 import { DragAndDrop } from './logic/dragndrop';
 import { Canvas } from './components/canvas';
+import { MuiThemeProvider } from 'material-ui/styles';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
+const theme = getMuiTheme(darkBaseTheme);
 export class App extends React.Component<{ dnd: DragAndDrop }, null> {
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <h2>Conceptio</h2>
-          <h4>Fastfood for diagrams</h4>
-          <div>mouse down => drag => mouse up : create rect</div>
-          <div>then select a rect to move or resize using handlers.</div>
+      <MuiThemeProvider muiTheme={theme}>
+        <div>
+          <CommandToolbar />
+          <Canvas width={800} dnd={this.props.dnd} />
         </div>
-        <Canvas width={800} dnd={this.props.dnd} />
-      </div>
+      </MuiThemeProvider>
     );
   }
 }
