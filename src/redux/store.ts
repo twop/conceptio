@@ -1,5 +1,5 @@
 import { Store, Middleware, createStore, applyMiddleware, compose } from 'redux';
-import rootReducer from './reducers';
+import { rootReducer } from './reducers';
 import { AppStore } from './IStore';
 import { createLogger } from 'redux-logger';
 

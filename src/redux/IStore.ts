@@ -1,12 +1,19 @@
+import { Figure } from '../models/figures';
 import { Id } from '../models/id';
-import { RectFigure } from '../models/figure-rect';
 import { History } from './undoable';
 
 export interface AppStore {
   canvas: History<Canvas>;
+  tool: Tool;
+}
+
+export type ToolType = 'rect' | 'ellipse';
+
+export interface Tool {
+  active: ToolType;
 }
 
 export interface Canvas {
-  figures: RectFigure[];
+  figures: Figure[];
   selected: Id;
 }

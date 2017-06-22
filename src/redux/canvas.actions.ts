@@ -3,7 +3,7 @@ import { Point } from '../models/geometry/point';
 import { Id } from '../models/id';
 import { Action } from 'redux';
 
-import { RectFigure } from '../models/figure-rect';
+import { Figure } from '../models/figures';
 import { type } from './utils';
 
 export const ADD_FIGURE = type('[Canvas] add figure');
@@ -15,7 +15,7 @@ export const CANVAS_UNDO = type('[Canvas] undo');
 export const CANVAS_REDO = type('[Canvas] redo');
 
 export interface NewFigureAction extends Action {
-  figure: RectFigure;
+  figure: Figure;
 }
 
 export interface SelectFigureAction extends Action {
@@ -40,7 +40,7 @@ export interface AdjustFigureAction extends Action {
 export const canvasActions = {
   undo: (): Action => ({ type: CANVAS_UNDO }),
   redo: (): Action => ({ type: CANVAS_REDO }),
-  addFigure: (figure: RectFigure): NewFigureAction => ({ type: ADD_FIGURE, figure }),
+  addFigure: (figure: Figure): NewFigureAction => ({ type: ADD_FIGURE, figure }),
   selectFigure: (figureId: Id): SelectFigureAction => ({ type: SELECT_FIGURE, figureId }),
   deleteFigure: (figureId: Id): DeleteFigureAction => ({ type: DELETE_FIGURE, figureId }),
   moveFigure: (figureId: Id, toLocation: Point): MoveFigureAction => ({ type: MOVE_FIGURE, figureId, toLocation }),

@@ -48,7 +48,7 @@ const canvasHandlers: HandlerMap<Canvas> = {
 };
 
 const config: UndoableConfig = { limit: 10, undoAction: CANVAS_UNDO, redoAction: CANVAS_REDO };
-export const reducer: Reducer<Canvas> = createReducer(canvasHandlers, initialState);
+const reducer: Reducer<Canvas> = createReducer(canvasHandlers, initialState);
 export const canvasReducer = undoable(reducer, config, initialState);
 
 interface AdjustHandlers {

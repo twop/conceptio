@@ -7,13 +7,13 @@ import { Dispatch } from 'redux';
 import { Draggable, RelativeTo } from './draggable';
 import { Rectangle } from '../models/geometry/rectangle';
 import { DragAndDrop, DragEvent } from '../logic/dragndrop';
-import { RectFigure } from '../models/figure-rect';
+import { Figure } from '../models/figures';
 import { Size } from '../models/geometry/size';
 import { constructHandlers, RectHandlerType } from '../models/drag-handler';
-import { Rect } from './rect';
+import { Rect } from './primitives';
 
 export interface MarkUpProps {
-  figure?: RectFigure;
+  figure?: Figure;
   dnd: DragAndDrop;
   relativeTo: RelativeTo;
   dispatch: Dispatch<void>;

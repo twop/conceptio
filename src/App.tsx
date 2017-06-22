@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { CommandToolbar } from './containers/toolbar';
 import { DragAndDrop } from './logic/dragndrop';
-import { Canvas } from './components/canvas';
+import { Canvas } from './containers/canvas';
 import { MuiThemeProvider } from 'material-ui/styles';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
